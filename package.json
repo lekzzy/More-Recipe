@@ -1,0 +1,50 @@
+{
+  "name": "andelaproject",
+  "version": "1.0.0",
+  "description": "This is for Andela BootCamp Project. I wish you best of luck",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --compilers js:babel-core/register ./server/test/Test.js --exit",
+    "start:dev": "nodemon ./server/bin/www --exec babel-node ./ervers/bin/www"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lekzzy/More-Recipe.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lekzzy/More-Recipe/issues"
+  },
+  "homepage": "https://github.com/lekzzy/More-Recipe#readme",
+  "dependencies": {
+    "babel-polyfill": "^6.26.0",
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "morgan": "^1.9.0",
+    "pg": "^7.3.0",
+    "pg-hstore": "^2.3.2",
+    "pg-promise": "^5.9.7",
+    "sequelize": "^4.17.2"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-register": "^6.26.0",
+    "chai": "^4.1.2",
+    "chai-http": "^3.0.0",
+    "eslint": "^4.9.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-config-google": "^0.9.1",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-node": "^5.2.1",
+    "eslint-plugin-promise": "^3.6.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "mocha": "^4.0.1",
+    "nodemon": "^1.12.1",
+    "should": "^13.1.3"
+  }
+}

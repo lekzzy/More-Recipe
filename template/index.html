@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <title>More-Recipes</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/css/materialize.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Marmelad|Courgette">
+  <link rel="stylesheet" href="css/index.css">
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+</head>
+
+<body>
+   <div id="signin-modal" class="modal">
+    <div class="modal-content">
+      <h5 class="center-align" id="title"></h5>
+    <form class = "row">
+        <span class="card-title truncate">Login to Your Account</span>
+        <div class="row">
+          <div class="input-field col s12">
+            <label for="username"><i class="material-icons">account_circle</i> Username or Email</label>
+            <input type="text" class="validate" name="username" id="username" />
+          </div>
+          <div class="input-field col s12">
+            <label for="password"><i class="material-icons">lock_outline</i> Password </label>
+            <input type="password" class="validate" name="password" id="password" />
+          </div>
+          <h6 class="right-align red-text">Forgot password?</h6>
+          <div class="center-align">
+            <input type="submit" class="btn waves-effect waves-light green lighten-2 go" value="Login" id="btn-signin">
+          </div>
+          <br/>
+          <div class="card-action right-align">
+            Don't have an account? <a class="signup red-text text-lighten-2 center">Sign Up</a>
+          </div>
+        </div>
+    </form>
+  </div>
+</div>
+</form>
+   <div id="signup-modal" class="modal">
+    <div class="modal-content">
+      <h5 class="center-align" id="title"></h5>
+    <form class = "row">
+        <span class="card-title center">Sign Up for an Account</span>
+          <div class="input-field col s12">
+            <label for="name"><i class="material-icons">person</i>Full Name</label>
+            <input type="text" class="validate" name="name" id="name" />
+          </div>
+          <div class="input-field col s12">
+            <label for="username"><i class="material-icons">account_box</i>Username</label>
+            <input type="text" class="validate" name="username" id="username" />
+          </div>
+          <div class="input-field col s12">
+            <label for="email"><i class="material-icons">markunread</i>Email address</label>
+            <input type="email" class="validate" name="email" id="email" />
+          </div>
+          <div class="input-field col s12">
+            <label for="password"><i class="material-icons">lock</i>Password </label>
+            <input type="password" class="validate" name="password" id="password" />
+          </div>
+          <div class="input-field col s12">
+            <label for="password"><i class="material-icons">lock</i>Confirm Password </label>
+            <input type="password" class="validate" name="password" id="password" />
+          </div>
+          <div class="center-align">
+            <input type="submit" class="btn waves-effect waves-light green lighten-2 go" value="Continue" id="btn-signup">
+          </div>
+          <br/>
+          <div class="card-action right-align">
+            Already have an account? <a class="login red-text text-lighten-2 center">LogIn</a>
+          </div>
+        </div>
+    </form>
+  </div>
+</div>
+  <header>
+    <a name='top'></a>
+    <div class="navbar-fixed">
+      <nav>
+        <div class="nav-wrapper red lighten-2">
+          <a href="index.html"class="brand-logo center truncate">More-Recipes</a>
+          <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+          <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li><a class="login clickable modal-trigger" href="#signin-modal">Login</a></li>
+            <li><a class="signup clickable modal-trigger" href="#signup-modal">Sign Up</a></li>
+
+            
+          </ul>
+          <ul class="side-nav round-shape" id="mobile-demo">
+            <li><a class="login">Login</a></li>
+            <li><a class="signup">Sign Up</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+  
+    <div class="parallax-container">
+      <div class="parallax"><img  class="responsive-img" src="images/porridge.jpg" ></div>
+      <h5 class="white-text v-align center-align">Food brings people together on many different levels. It's nourishment of the soul and body; it's truly love.
+           </h5>
+    </div>
+
+     <div class="white row container">
+      <h3 class="header">More-Recipes</h3>
+      <p class="red-text text-lighten-2"> More-Recipes is your social media for connecting with wonderful delicacies! </p>
+      <ul>
+        <li class="red-text text-lighten-2"> * Share your recipe ideas and inventions with the world</li>
+        <li class="red-text text-lighten-2"> * Try something new from others' recipe ideas </li>
+        <li class="red-text text-lighten-2"> * Share your feedback about the new experience (Upvote, downvote or express how you feel in your own words!)</li>
+        <li class="red-text text-lighten-2"> * Like a recipe? Yes, you can add it to your own favorite recipes list</li>
+      </ul>
+    </div>
+
+    <div class="recipes grey lighten-5">
+      <div class="row container ">
+        <div class="center-align">
+          <span class="full-title">Featured Recipes</span>
+          <div class="rounded-line"></div>
+        </div>
+        <div class="col s12 m6 l4">
+          <div class="card medium hoverable card-item">
+            <div class="card-image">
+              <img src="images/white_rice.jpg" height= "180px">
+            </div>
+            <div class="card-content">
+              <span class="card-title red-text text-lighten-2 center center">Ofada Rice</span>
+              <p class="truncate">A delicacy best eating with assorted stew</p>
+              <p class="truncate">Added by Sagaciousagacity</p>
+            </div>
+            <div class="card-action vote_details">
+              <div class="left">
+                <i class="material-icons green-text">thumb_up</i> <span>&nbsp;415</span>
+              </div>
+              <div class="right">
+                <i class="material-icons red-text">thumb_down</i><span>&nbsp;29&nbsp;</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col s12 m6 l4">
+          <div class="card medium hoverable card-item">
+            <div class="card-image">
+              <img src="images/puff_puff.jpg" height= "180px">
+            </div>
+            <div class="card-content">
+              <span class="card-title red-text text-lighten-2 center">Puff Puff</span>
+              <p class="truncate">African Puff Puff with flavours</p>
+              <p class="truncate">Added by Kelvin</p>
+            </div>
+            <div class="card-action vote_details">
+              <div class="left">
+                <i class="material-icons green-text">thumb_up</i>&nbsp;214
+              </div>
+              <div class="right">
+                <i class="material-icons red-text">thumb_down</i>&nbsp;17&nbsp;&nbsp;
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="col s12 m6 l4">
+          <div class="card medium hoverable card-item">
+            <div class="card-image">
+              <img src="images/garri_epa.jpg" height= "180px">
+            </div>
+            <div class="card-content">
+              <span class="card-title red-text text-lighten-2 center">Milked Garri</span>
+              <p class="truncate">Chilled, Milked and Sweetened Garri</p>
+              <p class="truncate">Added by TheChef</p>
+            </div>
+            <div class="card-action vote_details">
+              <div class="left">
+                <i class="material-icons green-text">thumb_up</i> <span>&nbsp;90</span>
+              </div>
+              <div class="right">
+                <i class="material-icons red-text">thumb_down</i><span>&nbsp;10&nbsp;&nbsp;</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col s12 m6 l4">
+          <div class="card medium hoverable card-item">
+            <div class="card-image">
+              <img src="images/porridge.jpg" height= "180px">
+            </div>
+            <div class="card-content">
+              <span class="card-title red-text text-lighten-2 center">Yam pottage</span>
+              <p class="truncate">Eat this food and forget your sorrow</p>
+              <p class="truncate">Added by KitchenRoyal</p>
+            </div>
+            <div class="card-action vote_details">
+              <div class="left">
+                <i class="material-icons green-text">thumb_up</i> <span>&nbsp;105</span>
+              </div>
+              <div class="right">
+                <i class="material-icons red-text">thumb_down</i><span>&nbsp;13&nbsp;&nbsp;</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col s12 m6 l4">
+          <div class="card medium hoverable card-item">
+            <div class="card-image">
+              <img src="images/amala_egusi.jpg" height= "180px">
+            </div>
+            <div class="card-content">
+              <span class="card-title red-text text-lighten-2 center">Amala with Egusi Soup</span>
+              <p class="truncate">Yoruba's favourite swallow</p>
+              <p class="truncate">Added by KitchenRoyal</p>
+            </div>
+            <div class="card-action vote_details">
+              <div class="left">
+                <i class="material-icons green-text">thumb_up</i> <span>&nbsp;346</span>
+              </div>
+              <div class="right">
+                <i class="material-icons red-text">thumb_down</i><span>&nbsp;8&nbsp;&nbsp;</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col s12 m6 l4">
+          <div class="card medium hoverable card-item">
+            <div class="card-image">
+              <img src="images/yam.jpg" height= "180px">
+            </div>
+            <div class="card-content">
+              <span class="card-title red-text text-lighten-2 center">Yam with Egg Sauce</span>
+              <p class="truncate">One of the best Nigerian delicacy</p>
+              <p class="truncate">Added by Sagaciousagacity</p>
+            </div>
+            <div class="card-action vote_details">
+              <div class="left">
+                <i class="material-icons green-text">thumb_up</i> <span>&nbsp;154</span>
+              </div>
+              <div class="right">
+                <i class="material-icons red-text">thumb_down</i><span>&nbsp;3&nbsp;&nbsp;</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </main>
+
+  <footer class="page-footer  red lighten-2">
+    <div class="container">
+      <div class="row">
+        <div class="col l6 s12">
+          <h5 class="white-text">More-Recipes.</h5>
+          <p class="grey-text text-lighten-4">An Andela Bootcamp 28 project</p>
+        </div>
+        <div class="col l4 offset-l2 s12">
+          <h5 class="white-text">Project External links</h5>
+          <ul>
+            <li><a class="grey-text text-lighten-3" href="https://github.com/lekzzy/More-Recipes/tree/development">Github</a></li>
+           >
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <div class="container">
+        Copyright © 2017 Lasisi Olalekan (Sagaciousagacity)
+      </div>
+    </div>
+  </footer>
+
+  <!--scripts includes-->
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/js/materialize.min.js"></script>
+  <script src="js/home.js"></script>
+</body>
+
+</html>
