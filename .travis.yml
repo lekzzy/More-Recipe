@@ -1,5 +1,18 @@
 language: node_js
 node_js:
-  - "6"
-
+- "stable" 
+script:
+- npm test
+install:
+- npm install
+directories:
+- "node_modules"
+after_success:
+- npm run coveralls
+branches:
+only:
+ - ch-update
+ - development
+webhooks:
+- https://coveralls.io/webhook
 
