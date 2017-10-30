@@ -4,8 +4,8 @@
   "description": "This is for Andela BootCamp Project. I wish you best of luck",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --timeout 1000 --compilers js:babel-core/register ./test/Test.js --exit",
-    "start:dev": "nodemon ./bin/www --exec babel-node ./bin/www"
+    "test": "mocha --timeout 1000 --compilers js:babel-core/register ./server/test/Test.js --exit",
+    "start:dev": "nodemon ./server/bin/www --exec babel-node ./server/bin/www"
   },
   "repository": {
     "type": "git",
