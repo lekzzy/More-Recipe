@@ -1,9 +1,11 @@
 const { parsed: environmentVariables } = require('dotenv').config();
 
+let apiKey = environmentVariables.API_KEY;
 const environment = environmentVariables.NODE_ENV || 'development';
 const dialect = 'postgres';
 const url = environmentVariables.DATABASE_URL;
 const devMode = environment === ('development' || 'test');
+
 
 const config = {
   url,
@@ -18,6 +20,10 @@ const config = {
   password: 'root',
 };
 
+if (devMode === 'development') {
+  return apiKey;
+}
+
 if (!devMode) {
   config.ssl = true;
   config.dialectOptions.ssl = {
@@ -25,3 +31,4 @@ if (!devMode) {
   };
 }
 module.exports = config;
+

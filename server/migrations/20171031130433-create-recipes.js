@@ -16,9 +16,6 @@ module.exports = {
       procedure: {
         type: Sequelize.TEXT
       },
-      userid: {
-        type: Sequelize.INTEGER
-      },
       upvotes: {
         type: Sequelize.INTEGER
       },

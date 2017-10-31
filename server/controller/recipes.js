@@ -1,6 +1,7 @@
 import recipes from '../models/index';
 
 //Recipe Class
+
 class Recipe {
 
     //This method add a recipe to the More-Recipes database

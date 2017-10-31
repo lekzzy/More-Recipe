@@ -75,5 +75,20 @@ export default (sequelize, DataTypes) => {
       }
     );
   };
+  hooks: {
+    beforeCreate: (user, options) => {
+      return new Promise((resolve, reject) => {
+        bcrypt.hashSyc(user.password, 8, (err, data) => {
+          if (err) 
+          {
+            reject(err);
+          }
+          user.password = data;
+          resolve();
+        })
+      });
+    }
+  }
+});
   return user;
 };
