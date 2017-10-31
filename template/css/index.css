@@ -110,4 +110,8 @@ h5{
     cursor: pointer;
 }
 
+.modal { 
+    width: 50% !important ; 
+    height: 120% !important ; 
+  }
 

@@ -1,4 +1,4 @@
-import recipes from '../models/recipe';
+import recipes from '../models/index';
 
 //Recipe Class
 class Recipe {
