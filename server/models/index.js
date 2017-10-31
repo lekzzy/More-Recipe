@@ -1,6 +1,6 @@
 import fs from 'fs';
 import Sequelize from 'sequelize';
-import config from '../../config/sequelize';
+import config from '../config/config';
 
 
 const sequelize = new Sequelize(config.url, config);
