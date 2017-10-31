@@ -3,25 +3,20 @@ import bigcrypt from 'bigcrypt';
 const regex_email = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const regex_password =  /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])$/;
 module.exports = (sequelize, DataTypes) => {
-  var user = sequelize.define('user', {
+  
+  const user = sequelize.define('user', {
     name: {type: DataTypes.STRING,
-          set(val) {
-           this.setDataValue('name', val.toLowerCase());
-           },
            allowNull: false,
-           required: true,
+           required: true
           },
+
     email: {type:DataTypes.STRING, 
            validate:{is: regex_email,
                     isEmail:
                     {args: true, 
                      msg:'Please Enter a valid Email Address'},
                      notNull: true}},
-          unique: true,
-            
-          set(val) {
-                      this.setDataValue('email', val.toLowerCase());
-                   },
+           unique: true,
               
     username: {type: DataTypes.STRING,
                required: true,
@@ -34,14 +29,29 @@ module.exports = (sequelize, DataTypes) => {
                required: true,
                min: 8,
                is: regex_password
-              }
-  }, 
+              },
+    profilePicture: {type:DataTypes.BLOB,
+                     allowNull: true
+                    },
+    phoneNumber: {type:DataTypes.INTEGER,
+                  allowNull: true,
+                  validate:{
+                            isInt:{
+                                  args:true,
+                                  msg:"Phone Number should be numbers only"
+                                  }
+                           }
+                  },
   
-  {
-    classMethods: {
-      associate: function(models) {
-        // associations can be defined here
-      }
+});
+  
+    // associations can be defined here
+    user.associate = (models) => {
+      user.hasMany(models.recipes, {
+         foreignKey: 'userId',
+         as: 'recipesId',
+        
+    }
     }
   });
      return user;

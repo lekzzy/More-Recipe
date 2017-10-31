@@ -14,7 +14,9 @@ module.exports = (sequelize, DataTypes) => {
     userid: DataTypes.INTEGER,
     upvotes: DataTypes.INTEGER,
     downvotes: DataTypes.INTEGER
-  }, {
+  }, 
+  
+  {
     classMethods: {
       associate: function(models) {
         // associations can be defined here

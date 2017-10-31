@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha --timeout 1000 --compilers js:babel-core/register ./server/test/Test.js --exit",
-    "start:dev": "nodemon ./server/bin/www --exec babel-node ./server/bin/www"
+    "start:dev": "nodemon ./server/bin/www --exec babel-node ./server/bin/www",
+    "lint": "eslint ./"
   },
   "repository": {
     "type": "git",
@@ -35,14 +36,9 @@
     "babel-register": "^6.26.0",
     "chai": "^4.1.2",
     "chai-http": "^3.0.0",
-    "eslint": "^4.9.0",
+    "eslint": "^4.10.0",
     "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-config-google": "^0.9.1",
-    "eslint-config-standard": "^10.2.1",
     "eslint-plugin-import": "^2.8.0",
-    "eslint-plugin-node": "^5.2.1",
-    "eslint-plugin-promise": "^3.6.0",
-    "eslint-plugin-standard": "^3.0.1",
     "mocha": "^4.0.1",
     "nodemon": "^1.12.1",
     "sequelize-cli": "^3.0.0",
