@@ -1,78 +1,64 @@
-const recipes = [
-  {
-    id: 1,
-    imageUrl: 'image/white_rice.jpg',
-    name: 'Ofada Rice',
-    description: 'A delicacy best eating with assorted stew',
-    user: 'Sagaciousagacity',
-    upvotes: 415,
-    downvotes: 29,
-    facvourited: 12,
-    views: 3,
-    review: [],
-  },
-
-  {
-    id: 2,
-    imageUrl: 'image/puff_puff.jpg',
-    name: 'Puff Puff',
-    description: 'African Puff Puff with flavours',
-    user: 'Kelvin',
-    upvotes: 214,
-    downvotes: 17,
-    facvourited: 8,
-    views: 34,
-    review: [],
-  },
-  {
-    id: 3,
-    imageUrl: 'images/garri_epa.jpg',
-    name: 'Milked Garri',
-    description: 'Chilled, Milked and Sweetened Garri',
-    user: 'TheChef',
-    upvotes: 90,
-    downvotes: 10,
-    facvourited: 16,
-    views: 13,
-    review: [],
-  },
-  {
-    id: 4,
-    imageUrl: 'images/porridge.jpg',
-    name: 'Yam pottage',
-    description: 'Eat this food and forget your sorrow',
-    user: 'KitchenRoyal',
-    upvotes: 105,
-    downvotes: 13,
-    facvourited: 19,
-    views: 12,
-    review: [],
-  },
-  {
-    id: 5,
-    imageUrl: 'images/amala_egusi.jpg',
-    name: 'Amala with Egusi Soup',
-    description: 'Yorubas favourite swallow',
-    user: 'KitchenRoyal',
-    upvotes: 348,
-    downvotes: 8,
-    facvourited: 19,
-    views: 1,
-    review: [],
-  },
-
-  {
-    id: 6,
-    imageUrl: 'images/yam.jpg',
-    name: 'Yam with Egg Sauce',
-    description: 'One of the best Nigerian delicacy',
-    user: 'Sagaciousagacity',
-    upvotes: 154,
-    downvotes: 3,
-    facvourited: 19,
-    views: 34,
-    review: [],
-  },
-];
-
-export default recipes;
+/** Define the Recipe database model/association
+ * @exports Recipe
+ * @param  {object} sequelize - sequelize
+ * @param  {object} DataTypes - sequelize Datatypes
+ * @return {object} The Recipe model
+ */
+export default (sequelize, DataTypes) => {
+  const Recipe = sequelize.define('Recipe', {
+    recipeName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    ingredients: DataTypes.TEXT,
+    procedure: DataTypes.TEXT,
+    viewCount: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+    },
+    upvotes: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      defaultValue: 0
+    },
+    downvotes: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      defaultValue: 0
+    },
+    userId: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: 'User',
+        key: 'id',
+        as: 'userId',
+      }
+    },
+    reviewId: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: 'Review',
+        key: 'id',
+        as: 'reviewId',
+      }
+    }
+  });
+  Recipe.associate = (models) => {
+    Recipe.belongsTo(models.User, {
+      foreignKey: 'userId',
+    });
+    Recipe.hasMany(models.Review, {
+      foreignKey: 'recipeId'
+    });
+    Recipe.hasMany(models.Favorite, {
+      foreignKey: 'recipeId'
+    });
+    Recipe.hasMany(models.Upvote, {
+      foreignKey: 'recipeId'
+    });
+    Recipe.hasMany(models.Downvote, {
+      foreignKey: 'recipeId'
+    });
+  };
+  return Recipe;
+};
