@@ -19,6 +19,7 @@ const config = {
   password: 'root',
 };
 
+
 if (!devMode) {
   config.ssl = true;
   config.dialectOptions.ssl = {
@@ -26,3 +27,4 @@ if (!devMode) {
   };
 }
 module.exports = config;
+

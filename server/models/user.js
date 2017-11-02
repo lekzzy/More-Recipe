@@ -1,12 +1,9 @@
+import bcrypt from 'bcrypt';
 
-const regexEmail = new RegExp(['\\^(([^<>()\\[\\]\\.,;:\\s@"]',
-  '+(\\.[^<>()\\[\\]\\.,;:\\s@"]+)*)|(".+"))@((\\[[0-9]{1,3}\\.[0-9]',
-  '{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]',
-  '{2,}))$/'].join(''));
-const regexPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])$/;
 export default (sequelize, DataTypes) => {
-  const user = sequelize.define('user', {
-
+  const regexEmail = /\S{3,}@\S{2,}\.\S{2,}/;
+  const regexPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])$/;
+  const User = sequelize.define('User', {
     name:
     {
       type: DataTypes.STRING,
@@ -37,15 +34,12 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       required: true,
-      min: 8,
+      min: {
+        arg: 8,
+        msg: 'Password must not be less than 8'
+      },
       is: regexPassword
     },
-
-    profilePicture: {
-      type: DataTypes.BLOB,
-      allowNull: true
-    },
-
     phoneNumber: {
       type: DataTypes.INTEGER,
       allowNull: true,
@@ -54,41 +48,32 @@ export default (sequelize, DataTypes) => {
         isInt:
         {
           args: true,
-          msg: 'Phone Number should be numbers only'
+          msg: 'Phone number should be numbers only'
         }
+      }
+    },
+    hook: {
+      afterValidate(user) {
+        user.password = bcrypt.hashSync(user.password, 10)
       }
     }
   });
-
-    // associations can be defined here
-  user.associate = (models) => {
-    user.hasMany(
-      models.recipes,
-      {
-        foreignKey: 'recipeId',
-      }
-    );
-    user.hasMany(
-      models.reviews,
-      {
-        foreignKey: 'recipeId',
-      }
-    );
+  User.associate = (models) => {
+    User.hasMany(models.Recipe, {
+      foreignKey: 'userId'
+    });
+    User.hasMany(models.Review, {
+      foreignKey: 'userId'
+    });
+    User.hasMany(models.Favorite, {
+      foreignKey: 'userId'
+    });
+    User.hasMany(models.Upvote, {
+      foreignKey: 'userId'
+    });
+    User.hasMany(models.Downvote, {
+      foreignKey: 'userId'
+    });
   };
-  hooks: {
-    beforeCreate: (user, options) => {
-      return new Promise((resolve, reject) => {
-        bcrypt.hashSyc(user.password, 8, (err, data) => {
-          if (err) 
-          {
-            reject(err);
-          }
-          user.password = data;
-          resolve();
-        })
-      });
-    }
-  }
-});
-  return user;
+  return User;
 };

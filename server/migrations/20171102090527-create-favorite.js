@@ -1,26 +1,11 @@
 module.exports = {
-  up: (queryInterface, Sequelize) => {
-    queryInterface.createTable('users', {
+  up: (queryInterface, Sequelize) =>
+    queryInterface.createTable('Favorite', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
-      },
-      name: {
-        type: Sequelize.STRING
-      },
-      email: {
-        type: Sequelize.STRING
-      },
-      username: {
-        type: Sequelize.STRING,
-      },
-      password: {
-        type: Sequelize.STRING
-      },
-      profilePicture: {
-        type: Sequelize.BLOB
       },
       createdAt: {
         allowNull: false,
@@ -30,25 +15,25 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       },
-      useId: {
+      userId: {
         type: Sequelize.INTEGER,
         onDelete: 'CASCADE',
         references: {
-          model: 'user',
+          model: 'User',
           key: 'id',
           as: 'userId',
-        },
+        }
       },
       recipeId: {
         type: Sequelize.INTEGER,
         onDelete: 'CASCADE',
         references: {
-          model: 'recipe',
+          model: 'Recipe',
           key: 'id',
           as: 'recipeId',
-        },
+        }
       }
-    });
-  },
-  down: queryInterface => queryInterface.dropTable('users')
+    }),
+  down: queryInterface =>
+    queryInterface.dropTable('Favorite')
 };
