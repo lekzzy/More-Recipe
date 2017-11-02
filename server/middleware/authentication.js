@@ -23,7 +23,7 @@ export default class Authentication {
             || req.headers['x-access-token'];
 
     if (token) {
-      const secret = process.env.secret || 'for sharing recipe';
+      const secret = process.env.API_KEY || 'for sharing recipe';
       jwt.verify(token, secret, (err, decoded) => {
         if (err) {
           return res.json({
@@ -44,7 +44,6 @@ export default class Authentication {
     return this;
   }
 
-
   /**
    * @static
    * @param {string} user - User Id
@@ -52,7 +51,9 @@ export default class Authentication {
    * @memberof Authentication
    */
   static sign(user) {
-    this.secret = process.env.secret || 'for sharing recipe';
-    return jwt.sign(user, this.secretKey);
+    const secretKey = process.env.API_KEY || 'for sharing recipe';
+    return jwt.sign({
+      userId: user.id
+    }, secretKey);
   }
 }

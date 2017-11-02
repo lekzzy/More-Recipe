@@ -1,6 +1,6 @@
 import models from '../models';
 import Encryption from '../middleware/encryption';
-import Auth from '../middleware/authentication';
+import Authentication from '../middleware/authentication';
 
 const { User } = models;
 
@@ -22,16 +22,22 @@ export default class UserController {
      */
   static signUp(req, res) {
     return User
-      .create(req.body)
-      .then(() => {
-        const token = Auth.sign(User);
+      .create({
+        name: req.body.name,
+        username: req.body.username,
+        email: req.body.email,
+        password: req.body.password,
+        phoneNumber: req.body.phoneNumber
+      })
+      .then((user) => {
+        const token = Authentication.sign(user);
         return res.status(201).json({
           message: 'Account has been created',
           data: token
         });
       })
       .catch(error => res.status(503).json({
-        success: false,
+        status: false,
         message: `Error Creating user ${error.message}}`,
       }));
   }
@@ -46,7 +52,8 @@ export default class UserController {
  * @memberof UserController
  */
   static signIn(req, res) {
-    const userEmail = req.body.email;
+    const { userEmail } = req.body.email;
+
     return User
       .findOne({
         attributes: ['id'],
@@ -59,23 +66,23 @@ export default class UserController {
       .then((userFound) => {
         if (!userFound) {
           return res.status(404).json({
-            success: false,
+            status: false,
             message: 'Email address does not exist!'
           });
         }
 
         if (Encryption.verifyHash(req.body.password, userFound.password)) {
-          Auth.sign(userFound.id);
+          Authentication.sign(userFound.id);
 
           return res.status(201).json({
-            success: true,
+            status: true,
             data: {
-              id: userFound.id,
+              id: userFound.id
             }
           });
         }
         res.status(401).json({
-          success: false,
+          status: false,
           message: 'Incorrect Password!'
         });
       });

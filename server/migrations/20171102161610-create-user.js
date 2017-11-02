@@ -1,3 +1,5 @@
+import bcrypt from 'bcrypt';
+
 module.exports = {
   up: (queryInterface, Sequelize) =>
     queryInterface.createTable('User', {
@@ -22,7 +24,11 @@ module.exports = {
       phoneNumber: {
         type: Sequelize.INTEGER,
         allowNull: true
-
+      },
+      hooks: {
+        afterValidate: (user) => {
+          user.password = bcrypt.hashSync(user.password, 10);
+        }
       },
       createdAt: {
         allowNull: false,

@@ -1,8 +1,12 @@
 import express from 'express';
 import RecipeController from '../../controller/recipesController';
 import ReviewController from '../../controller/reviewController';
+import Authentication from '../../middleware/authentication';
 
 const user = express.Router();
+
+user.use('*', Authentication.verify);
+
 user.route('/')
   .post(RecipeController.createRecipe)
   .get(RecipeController.getAllRecipes);

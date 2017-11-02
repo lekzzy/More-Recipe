@@ -10,19 +10,18 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    ingredients: DataTypes.STRING,
-    procedure: DataTypes.STRING,
+    ingredients: DataTypes.TEXT,
+    procedure: DataTypes.TEXT,
     viewCount: {
       type: DataTypes.INTEGER,
-      allowNull: true,
       defaultValue: 0,
     },
-    upvote: {
+    upvotes: {
       type: DataTypes.INTEGER,
       allowNull: true,
       defaultValue: 0
     },
-    downvote: {
+    downvotes: {
       type: DataTypes.INTEGER,
       allowNull: true,
       defaultValue: 0

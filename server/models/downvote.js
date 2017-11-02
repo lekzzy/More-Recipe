@@ -31,7 +31,6 @@ export default (sequelize, DataTypes) => {
     });
     Downvote.belongsTo(models.User, {
       foreignKey: 'userId',
-      onDelete: 'CASCADE'
     });
   };
   return Downvote;

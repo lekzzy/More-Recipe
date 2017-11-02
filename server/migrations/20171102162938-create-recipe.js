@@ -11,13 +11,10 @@ module.exports = {
         type: Sequelize.STRING
       },
       ingredients: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
       procedure: {
-        type: Sequelize.STRING
-      },
-      viewCount: {
-        type: Sequelize.INTEGER
+        type: Sequelize.TEXT
       },
       upvote: {
         type: Sequelize.INTEGER

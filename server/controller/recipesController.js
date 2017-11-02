@@ -1,5 +1,5 @@
 import models from '../models';
-import Search from './searchRecipeController';
+import SearchRecipeController from './searchRecipeController';
 
 const { Recipe } = models;
 
@@ -19,15 +19,20 @@ export default class RecipeController {
    * @memberof Recipe
    */
   static createRecipe(req, res) {
+    console.log(`RECIPE NAME: ${req.body.recipeName}`);
     return Recipe
-      .create(req.body)
+      .create({
+        recipeName: req.body.recipeName,
+        ingredients: req.body.ingredients,
+        procedure: req.body.procedure
+      })
       .then(() => res.status(201).json({
-        success: true,
-      }))
-      .catch(() => res.status(503).json({
-        success: false,
-        message: 'Error Creating Recipe'
+        status: true,
       }));
+    // .catch(() => res.status(503).json({
+    //   status: false,
+    //   message: 'Error Creating Recipe'
+    // }));
   }
 
   /**
@@ -105,7 +110,7 @@ export default class RecipeController {
           });
         }
 
-        if (+recipeFound.userId !== +userId) {
+        if (+recipeFound.req.decoded.Id !== +userId) {
           return res.status(403).json({
             success: false,
             message: 'You cannot delete this recipe'
@@ -206,10 +211,8 @@ export default class RecipeController {
    * @memberof Recipe
    */
   static getAllRecipes(req, res) {
-    const newSearch = new Search.default();
-
     if (req.query.sort === 'upvotes' && req.query.order === 'descending') {
-      newSearch.sortMostUpvotes(req, res);
+      Search.sortMostUpvotes(req, res);
     } else if (req.query.ingredients) {
       newSearch.searchByIngredients(req, res);
     } else if (req.query.search) {

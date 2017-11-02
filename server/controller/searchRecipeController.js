@@ -1,25 +1,25 @@
 import models from '../models';
 
-const recipe = models.Recipe;
-const user = models.User;
+const Recipe = models;
+const User = models;
 
 /**
  * Class Definition for the Search Recipe Object
  *
  * @export
- * @class Search
+ * @classSearchRecipeController
  */
-export default class Search {
+export default class SearchRecipeController {
   /**
      * Fetch list of recipes ordered (descending) by number of upvotes
-     *
+     *@static
      * @param {object} req - HTTP Request
      * @param {object} res - HTTP Response
      * @returns {object} Class instance
-     * @memberof Search
+     * @memberof SearchRecipeController
      */
-  sortMostUpvotes(req, res) {
-    recipe
+  static sortMostUpvotes(req, res) {
+    return Recipe
       .findAll({
         include: [
           { model: models.User, attributes: ['name', 'updatedAt'] }
@@ -45,23 +45,21 @@ export default class Search {
         success: false,
         message: 'Unable to fetch recipes'
       }));
-
-    return this;
   }
 
   /**
-     * Search for recipe by Recipe name, Ingredients or Name of User
-     *
+     * SearchController for recipe by Recipe name, Ingredients or Name of User
+     *@static
      * @param {object} req - HTTP Request
      * @param {object} res - HTTP Response
      * @returns {object} Class instance
-     * @memberof Search
+     * @memberof SearchRecipeController
      */
-  searchAll(req, res) {
+  static searchAll(req, res) {
     let results;
     const searchTerm = req.query.search;
 
-    recipe
+    return Recipe
       .findAll({
         where: {
           $or: [
@@ -85,7 +83,7 @@ export default class Search {
         results = foundRecipes.slice(0);
       })
       .then(() => {
-        user
+        User
           .findAll({
             attributes: ['name'],
             where: {
@@ -120,26 +118,24 @@ export default class Search {
         success: false,
         message: 'Unable to search recipes'
       }));
-
-    return this;
   }
 
   /**
      * Fetch list of recipes based ingredients supplied
-     *
+     *@static
      * @param {object} req - HTTP Request
      * @param {object} res - HTTP Response
      * @returns {object} Class instance
-     * @memberof Search
+     * @memberof SearchRecipeController
      */
-  searchByIngredients(req, res) {
+  static searchByIngredients(req, res) {
     const ingredients = req.query.ingredients.split(' ');
 
     const queryClause = ingredients.map(item => ({
       ingredients: { $iLike: `%${item}%` }
     }));
 
-    recipe
+    return Recipe
       .findAll({
         where: {
           $or: queryClause
@@ -165,7 +161,5 @@ export default class Search {
         success: false,
         message: 'Unable to search recipes'
       }));
-
-    return this;
   }
 }
