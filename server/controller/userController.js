@@ -2,7 +2,7 @@ import models from '../models';
 import Encryption from '../middleware/encryption';
 import Authentication from '../middleware/authentication';
 
-const { User } = models;
+const { Users } = models;
 
 
 /**
@@ -21,17 +21,19 @@ export default class UserController {
      * @memberof UserController
      */
   static signUp(req, res) {
-    return User
+    const hashedPassword = Encryption.generateHash(req.body.password);
+    return Users
       .create({
         name: req.body.name,
         username: req.body.username,
         email: req.body.email,
-        password: req.body.password,
+        password: hashedPassword,
         phoneNumber: req.body.phoneNumber
       })
-      .then((user) => {
-        const token = Authentication.sign(user);
+      .then((users) => {
+        const token = Authentication.sign(users);
         return res.status(201).json({
+          success: true,
           message: 'Account has been created',
           data: token
         });
@@ -52,39 +54,59 @@ export default class UserController {
  * @memberof UserController
  */
   static signIn(req, res) {
-    const { userEmail } = req.body.email;
-
-    return User
+    return Users
       .findOne({
-        attributes: ['id'],
+        attributes: ['id', 'username', 'email', 'password'],
         where: {
-          email: {
-            $iLike: userEmail
-          }
+          $or: [
+            {
+              username: {
+                $iLike: req.body.username
+              }
+            },
+            {
+              email: {
+                $iLike: req.body.email
+              }
+            }
+          ]
         }
       })
       .then((userFound) => {
         if (!userFound) {
-          return res.status(404).json({
-            status: false,
-            message: 'Email address does not exist!'
-          });
+          return res
+            .status(404)
+            .json({
+              success: false,
+              message: 'Username or email does not exist!'
+            });
         }
-
         if (Encryption.verifyHash(req.body.password, userFound.password)) {
-          Authentication.sign(userFound.id);
-
-          return res.status(201).json({
-            status: true,
-            data: {
-              id: userFound.id
-            }
+          const token = Authentication.sign({
+            id: userFound.id
           });
+
+          const loggedUser = {
+            userId: userFound.id,
+            token
+          };
+
+          return res
+            .status(201)
+            .json({
+              success: true,
+              message: 'User Signed in and token generated!',
+              Users: loggedUser
+            });
         }
         res.status(401).json({
-          status: false,
+          success: false,
           message: 'Incorrect Password!'
         });
-      });
+      })
+      .catch(() => res.status(500).json({
+        success: false,
+        message: 'Error Signing In User'
+      }));
   }
 }

@@ -1,7 +1,8 @@
 import models from '../models';
 import SearchRecipeController from './searchRecipeController';
 
-const { Recipe } = models;
+const { Recipes } = models;
+const Search = SearchRecipeController;
 
 /**
  * Class Definition for the Recipe Object
@@ -19,20 +20,24 @@ export default class RecipeController {
    * @memberof Recipe
    */
   static createRecipe(req, res) {
-    console.log(`RECIPE NAME: ${req.body.recipeName}`);
-    return Recipe
+    return Recipes
       .create({
-        recipeName: req.body.recipeName,
+        name: req.body.name,
         ingredients: req.body.ingredients,
-        procedure: req.body.procedure
+        procedure: req.body.procedure,
+        userId: req.body.userId
       })
-      .then(() => res.status(201).json({
-        status: true,
+      .then((createdRecipe) => {
+        res.status(201).json({
+          success: true,
+          message: 'New Recipe created',
+          recipe: createdRecipe
+        });
+      })
+      .catch(error => res.status(503).json({
+        status: false,
+        message: `Error Creating Recipe ${error.message}`,
       }));
-    // .catch(() => res.status(503).json({
-    //   status: false,
-    //   message: 'Error Creating Recipe'
-    // }));
   }
 
   /**
@@ -44,13 +49,8 @@ export default class RecipeController {
    * @memberof Recipe
   * */
   static modifyRecipe(req, res) {
-    const { userId } = req.userId;
-    const { recipeId } = req.params.recipeId || 0;
-    const { recipeName } = req.body.recipeName;
-    const { ingredients } = req.body.ingredients;
-    const { procedure } = req.body.procedure;
-
-    return Recipe
+    const recipeId = req.params.recipeId || 0;
+    return Recipes
       .findById(recipeId)
       .then((recipeFound) => {
         if (!recipeFound) {
@@ -60,17 +60,17 @@ export default class RecipeController {
           });
         }
 
-        if (+recipeFound.userId !== +userId) {
+        if (+recipeFound.userId !== +req.body.userId) {
           return res.status(403).json({
             success: false,
             message: 'You cannot modify this recipe'
           });
         }
 
-        Recipe.update({
-          recipeName,
-          ingredients,
-          procedure
+        Recipes.update({
+          name: req.body.name,
+          ingredients: req.body.ingredients,
+          procedure: req.body.procedure
         }, {
           where: {
             id: recipeId
@@ -79,12 +79,13 @@ export default class RecipeController {
         })
           .then(result => res.status(201).json({
             success: true,
+            message: `recipe with id: ${recipeId} updated successfully`,
             data: result[1]
           }));
       })
-      .catch(() => res.status(503).json({
+      .catch(error => res.status(503).json({
         success: false,
-        message: 'Error Modifying Recipe'
+        message: `Error Modifying Recipe ${error.message}`
       }));
   }
 
@@ -97,37 +98,42 @@ export default class RecipeController {
    * @memberof Recipe
    */
   static deleteRecipe(req, res) {
-    const { recipeId } = req.params.recipeId;
-    const { userId } = req.userId;
-
-    return Recipe
-      .findById(recipeId)
+    return Recipes.findById(req.params.recipeId)
       .then((recipeFound) => {
         if (!recipeFound) {
-          return res.status(404).json({
-            success: false,
-            message: `No matching recipe with id: ${recipeId}`
-          });
+          return res
+            .status(404)
+            .json({
+              success: false,
+              message: `No matching recipe with id: ${req.params.recipeId}`
+            });
         }
 
-        if (+recipeFound.req.decoded.Id !== +userId) {
-          return res.status(403).json({
-            success: false,
-            message: 'You cannot delete this recipe'
-          });
+        if (+recipeFound.userId !== +req.body.userId) {
+          return res
+            .status(403)
+            .json({
+              success: false,
+              message: 'You cannot delete this recipe'
+            });
         }
 
-        Recipe.destroy({
+        Recipes.destroy({
           where: {
-            id: recipeId
-          },
-        })
-          .then(() => res.status(204).end());
+            id: req.params.recipeId
+          }
+        }).then(() => res.status(205)
+          .json({
+            success: true,
+            message: `recipe with recipe id: ${req.params.recipeId} deleted successfully`
+          }));
+        // .end());
       })
-      .catch(() => res.status(503).json({
-        success: true,
-        message: 'Error Deleting Recipe'
-      }));
+      .catch(error =>
+        res.status(503).json({
+          success: true,
+          message: `Error Deleting Recipe ${error.message}`
+        }));
   }
 
   /**
@@ -139,19 +145,18 @@ export default class RecipeController {
    * @memberof Recipe
    */
   static getRecipe(req, res) {
-    const { recipeId } = req.params.recipeId;
-    return Recipe
+    return Recipes
       .findOne({
-        where: { id: recipeId },
+        where: { id: req.params.recipeId },
         include: [
-          { model: models.User, attributes: ['name', 'updatedAt'] }
+          { model: models.Users, attributes: ['name', 'updatedAt'] }
         ]
       })
       .then((recipeFound) => {
         if (!recipeFound) {
           return res.status(404).json({
             success: false,
-            message: `No matching recipe with id: ${recipeId}`
+            message: `No matching recipe with id: ${req.params.recipeId}`
           });
         }
 
@@ -162,9 +167,9 @@ export default class RecipeController {
         success: true,
         data: recipeLoaded
       }))
-      .catch(() => res.status(503).json({
+      .catch(error => res.status(503).json({
         success: false,
-        message: 'Unable to fetch recipes'
+        message: `Unable to fetch recipes ${error.message}`
       }));
   }
 
@@ -177,29 +182,33 @@ export default class RecipeController {
    * @memberof Recipe
    */
   static getUserRecipes(req, res) {
-    const { userId } = req.userId;
-
-    return Recipe
+    return Recipes
       .findAll({
-        where: { userId }
+        where: { id: req.userId },
+        include: [
+          { model: models.Users, attributes: ['name', 'updatedAt'] }
+        ]
       })
       .then((foundRecipes) => {
         if (!foundRecipes) {
-          return res.status(404).json({
-            success: true,
-            message: 'No User Stored Recipes found',
-          });
+          return res
+            .status(404)
+            .json({
+              success: true,
+              message: 'No User Stored Recipes found'
+            });
         }
-
-        return res.status(201).json({
+        res.status(201).json({
           success: true,
-          data: foundRecipes
+          message: 'User Recipe found',
+          recipes: foundRecipes
         });
       })
-      .catch(() => res.status(503).json({
-        success: false,
-        message: 'Unable to get user recipes'
-      }));
+      .catch(error =>
+        res.status(503).json({
+          success: false,
+          message: `Unable to get user recipes${error.message}`
+        }));
   }
 
   /**
@@ -214,11 +223,11 @@ export default class RecipeController {
     if (req.query.sort === 'upvotes' && req.query.order === 'descending') {
       Search.sortMostUpvotes(req, res);
     } else if (req.query.ingredients) {
-      newSearch.searchByIngredients(req, res);
+      Search.searchByIngredients(req, res);
     } else if (req.query.search) {
-      newSearch.searchAll(req, res);
+      Search.searchAll(req, res);
     } else {
-      return Recipe
+      return Recipes
         .findAll({
           include: [
             { model: models.User, attributes: ['name', 'updatedAt'] }

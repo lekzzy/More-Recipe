@@ -1,7 +1,7 @@
 import models from '../models';
 
-const Recipe = models;
-const User = models;
+const { Recipes } = models;
+const { Users } = models;
 
 /**
  * Class Definition for the Search Recipe Object
@@ -19,10 +19,10 @@ export default class SearchRecipeController {
      * @memberof SearchRecipeController
      */
   static sortMostUpvotes(req, res) {
-    return Recipe
+    return Recipes
       .findAll({
         include: [
-          { model: models.User, attributes: ['name', 'updatedAt'] }
+          { model: models.Users, attributes: ['name', 'updatedAt'] }
         ],
         order: [
           ['upvotes', 'DESC']
@@ -41,9 +41,9 @@ export default class SearchRecipeController {
           data: foundRecipes
         });
       })
-      .catch(() => res.status(503).json({
+      .catch(error => res.status(503).json({
         success: false,
-        message: 'Unable to fetch recipes'
+        message: `Unable to fetch recipes: ${error.message}`
       }));
   }
 
@@ -59,7 +59,7 @@ export default class SearchRecipeController {
     let results;
     const searchTerm = req.query.search;
 
-    return Recipe
+    return Recipes
       .findAll({
         where: {
           $or: [
@@ -76,14 +76,14 @@ export default class SearchRecipeController {
           ]
         },
         include: [
-          { model: models.User, attributes: ['name', 'updatedAt'] }
+          { model: models.Users, attributes: ['name', 'updatedAt'] }
         ]
       })
       .then((foundRecipes) => {
         results = foundRecipes.slice(0);
       })
       .then(() => {
-        User
+        Users
           .findAll({
             attributes: ['name'],
             where: {
@@ -106,7 +106,7 @@ export default class SearchRecipeController {
               ]
             },
             include: [
-              { model: models.Recipe }
+              { model: models.Recipes }
             ]
           })
           .then(data => res.status(201).json({
@@ -114,9 +114,9 @@ export default class SearchRecipeController {
             data: results.concat(data)
           }));
       })
-      .catch(() => res.status(503).json({
+      .catch(error => res.status(503).json({
         success: false,
-        message: 'Unable to search recipes'
+        message: `Unable to search recipes: ${error.message}`
       }));
   }
 
@@ -135,13 +135,13 @@ export default class SearchRecipeController {
       ingredients: { $iLike: `%${item}%` }
     }));
 
-    return Recipe
+    return Recipes
       .findAll({
         where: {
           $or: queryClause
         },
         include: [
-          { model: models.User, attributes: ['name', 'updatedAt'] }
+          { model: models.Users, attributes: ['name', 'createdAt'] }
         ]
       })
       .then((foundRecipes) => {
@@ -157,9 +157,9 @@ export default class SearchRecipeController {
           data: foundRecipes,
         });
       })
-      .catch(() => res.status(503).json({
+      .catch(error => res.status(503).json({
         success: false,
-        message: 'Unable to search recipes'
+        message: `Unable to search recipes: ${error.message}`
       }));
   }
 }

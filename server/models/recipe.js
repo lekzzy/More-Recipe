@@ -5,13 +5,14 @@
  * @return {object} The Recipe model
  */
 export default (sequelize, DataTypes) => {
-  const Recipe = sequelize.define('Recipe', {
-    recipeName: {
+  const Recipe = sequelize.define('Recipes', {
+    name: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: false
     },
-    ingredients: DataTypes.TEXT,
-    procedure: DataTypes.TEXT,
+    ingredients: DataTypes.STRING,
+    procedure: DataTypes.STRING,
+    imageUrl: DataTypes.BLOB,
     viewCount: {
       type: DataTypes.INTEGER,
       defaultValue: 0,
@@ -29,35 +30,32 @@ export default (sequelize, DataTypes) => {
     userId: {
       type: DataTypes.INTEGER,
       references: {
-        model: 'User',
+        model: 'Users',
         key: 'id',
         as: 'userId',
-      }
-    },
-    reviewId: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: 'Review',
-        key: 'id',
-        as: 'reviewId',
       }
     }
   });
   Recipe.associate = (models) => {
-    Recipe.belongsTo(models.User, {
+    Recipe.belongsTo(models.Users, {
       foreignKey: 'userId',
+      onDelete: 'CASCADE'
     });
-    Recipe.hasMany(models.Review, {
-      foreignKey: 'recipeId'
+    Recipe.hasMany(models.Reviews, {
+      foreignKey: 'recipeId',
+      onDelete: 'CASCADE'
     });
-    Recipe.hasMany(models.Favorite, {
-      foreignKey: 'recipeId'
+    Recipe.hasMany(models.Favorites, {
+      foreignKey: 'recipeId',
+      onDelete: 'CASCADE'
     });
-    Recipe.hasMany(models.Upvote, {
-      foreignKey: 'recipeId'
+    Recipe.hasMany(models.Upvotes, {
+      foreignKey: 'recipeId',
+      onDelete: 'CASCADE'
     });
-    Recipe.hasMany(models.Downvote, {
-      foreignKey: 'recipeId'
+    Recipe.hasMany(models.Downvotes, {
+      foreignKey: 'recipeId',
+      onDelete: 'CASCADE'
     });
   };
   return Recipe;

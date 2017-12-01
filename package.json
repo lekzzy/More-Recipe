@@ -5,10 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha --timeout 1000 --compilers js:babel-core/register ./server/test/Test.js --exit",
-    "start:dev": "nodemon --exec babel-node ./server/bin/www",
-    "build": "babel ./server
-    "lint": "eslint ./"
-    heroku-
+    "start:dev": "nodemon --exec babel-node ./server/bin/www"
   },
   "repository": {
     "type": "git",

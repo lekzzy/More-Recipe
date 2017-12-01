@@ -1,36 +1,36 @@
-/** Define the Favourite database model/association
+/** Define the Favorite database model/association
  * @exports Favorite
  * @param  {object} sequelize - sequelize
  * @param  {object} DataTypes - sequelize Datatypes
- * @return {object} The Favourite model
+ * @return {object} The Favorite model
  */
 export default (sequelize, DataTypes) => {
-  const Favorite = sequelize.define('Favorite', {
+  const Favorite = sequelize.define('Favorites', {
     userId: {
       type: DataTypes.INTEGER,
       onDelete: 'CASCADE',
       references: {
-        model: 'User',
+        model: 'Users',
         key: 'id',
-        as: 'userId',
+        as: 'userId'
       }
     },
     recipeId: {
       type: DataTypes.INTEGER,
       onDelete: 'CASCADE',
       references: {
-        model: 'Recipe',
+        model: 'Recipes',
         key: 'id',
-        as: 'recipeId',
+        as: 'recipeId'
       }
     }
   });
   Favorite.associate = (models) => {
-    Favorite.belongsTo(models.Recipe, {
+    Favorite.belongsTo(models.Recipes, {
       foreignKey: 'recipeId',
       onDelete: 'CASCADE'
     });
-    Favorite.belongsTo(models.User, {
+    Favorite.belongsTo(models.Users, {
       foreignKey: 'userId',
       onDelete: 'CASCADE'
     });

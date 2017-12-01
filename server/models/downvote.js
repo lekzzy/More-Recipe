@@ -5,32 +5,33 @@
  * @return {object} The Downvote model
  */
 export default (sequelize, DataTypes) => {
-  const Downvote = sequelize.define('Downvote', {
+  const Downvote = sequelize.define('Downvotes', {
     recipeId: {
       type: DataTypes.INTEGER,
       onDelete: 'CASCADE',
       references: {
-        model: 'Recipe',
+        model: 'Recipes',
         key: 'id',
-        as: 'recipeId',
+        as: 'recipeId'
       }
     },
     userId: {
       type: DataTypes.INTEGER,
       references: {
-        model: 'User',
+        model: 'Users',
         key: 'id',
-        as: 'userId',
+        as: 'userId'
       }
     }
   });
   Downvote.associate = (models) => {
-    Downvote.belongsTo(models.Recipe, {
+    Downvote.belongsTo(models.Recipes, {
       foreignKey: 'recipeId',
       onDelete: 'CASCADE'
     });
-    Downvote.belongsTo(models.User, {
+    Downvote.belongsTo(models.Users, {
       foreignKey: 'userId',
+      onDelete: 'CASCADE'
     });
   };
   return Downvote;

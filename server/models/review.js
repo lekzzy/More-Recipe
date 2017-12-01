@@ -5,34 +5,36 @@
  * @return {object} The Review model
  */
 export default (sequelize, DataTypes) => {
-  const Review = sequelize.define('Review', {
-    content: DataTypes.TEXT,
-    recipeId: {
-      type: DataTypes.INTEGER,
-      onDelete: 'CASCADE',
-      references: {
-        model: 'Recipe',
-        key: 'id',
-        as: 'recipeId',
-      }
-    },
+  const Review = sequelize.define('Reviews', {
+    review: DataTypes.TEXT,
     userId: {
       type: DataTypes.INTEGER,
       onDelete: 'CASCADE',
       references: {
-        model: 'User',
+        model: 'Users',
         key: 'id',
-        as: 'userId',
+        as: 'userId'
+      }
+    },
+    recipeId: {
+      type: DataTypes.INTEGER,
+      onDelete: 'CASCADE',
+      references: {
+        model: 'Recipes',
+        key: 'id',
+        as: 'recipeId'
       }
     }
   });
 
   Review.associate = (models) => {
-    Review.belongsTo(models.Recipe, {
+    Review.belongsTo(models.Recipes, {
       foreignKey: 'recipeId',
+      onDelete: 'CASCADE'
     });
-    Review.belongsTo(models.User, {
+    Review.belongsTo(models.Users, {
       foreignKey: 'userId',
+      onDelete: 'CASCADE'
     });
   };
   return Review;

@@ -5,30 +5,30 @@
  * @return {object} The Upvote model
  */
 export default (sequelize, DataTypes) => {
-  const Upvote = sequelize.define('Upvote', {
+  const Upvote = sequelize.define('Upvotes', {
     recipeId: {
       type: DataTypes.INTEGER,
       references: {
-        model: 'Recipe',
+        model: 'Recipes',
         key: 'id',
-        as: 'recipeId',
+        as: 'recipeId'
       }
     },
     userId: {
       type: DataTypes.INTEGER,
       references: {
-        model: 'User',
+        model: 'Users',
         key: 'id',
-        as: 'userId',
+        as: 'userId'
       }
     }
   });
   Upvote.associate = (models) => {
-    Upvote.belongsTo(models.Recipe, {
+    Upvote.belongsTo(models.Recipes, {
       foreignKey: 'recipeId',
       onDelete: 'CASCADE'
     });
-    Upvote.belongsTo(models.User, {
+    Upvote.belongsTo(models.Users, {
       foreignKey: 'userId',
       onDelete: 'CASCADE'
     });

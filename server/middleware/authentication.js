@@ -18,13 +18,13 @@ export default class Authentication {
      * @memberof Authentication
      */
   static verify(req, res, next) {
-    const token = req.body.token
-            || req.query.token
-            || req.headers['x-access-token'];
+    const token = req.headers['x-access-token']
+                  || req.query.token
+                  || req.body.token;
+    const secretKey = process.env.API_KEY;
 
     if (token) {
-      const secret = process.env.API_KEY || 'for sharing recipe';
-      jwt.verify(token, secret, (err, decoded) => {
+      jwt.verify(token, secretKey, (err, decoded) => {
         if (err) {
           return res.json({
             success: false,
@@ -51,9 +51,9 @@ export default class Authentication {
    * @memberof Authentication
    */
   static sign(user) {
-    const secretKey = process.env.API_KEY || 'for sharing recipe';
+    const secretKey = process.env.API_KEY;
     return jwt.sign({
       userId: user.id
-    }, secretKey);
+    }, secretKey, { expiresIn: 48 * 60 * 60 });
   }
 }
